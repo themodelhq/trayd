@@ -1,0 +1,13 @@
+# ============================================================
+# Tray'd - Netlify Redirects
+# @description Handle routing for Next.js on Netlify
+# ============================================================
+
+# API Routes - Pass through to Netlify Functions
+/api/*  /.netlify/functions/:splat  200
+
+# Next.js Assets - Cache static assets
+/_next/static/* /_next/static/:splat 200
+
+# Default - Fallback to index.html for SPA routing
+/*    /index.html   200
