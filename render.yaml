@@ -1,0 +1,78 @@
+# ============================================================
+# Tray'd - Render Deployment Configuration
+# @description Production-ready blueprint for Render.com hosting
+# ============================================================
+
+services:
+  # ==========================================================
+  # MAIN WEB SERVICE - Next.js Application
+  # ==========================================================
+  - type: web
+    name: trayed-web
+    runtime: node
+    env: node
+    
+    # Build settings - install deps, generate prisma client, then build
+    buildCommand: "npm install --legacy-peer-deps && npx prisma generate && npm run build"
+    startCommand: "npm start"
+    
+    # Auto-deploy settings
+    branch: main
+    healthCheckPath: /api/health
+    
+    # Environment variables (secrets should be set in dashboard)
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: PORT
+        value: 10000
+      
+    # Number of instances
+    numInstances: 1
+    
+    # Resource limits
+    cpu: 1
+    memory: 1024
+    
+    # Disk configuration (optional)
+    disk:
+      name: trayed-data
+      mountPath: /data
+      sizeGB: 1
+
+# ============================================================
+# DEPLOYMENT CONTEXTS
+# ============================================================
+
+environments:
+  production:
+    services:
+      - type: web
+        name: trayed-web
+        plan: standard+  # Higher tier for production
+        numInstances: 2  # Multiple instances for redundancy
+        envVars:
+          - key: NODE_ENV
+            value: production
+  
+  staging:
+    services:
+      - type: web
+        name: trayed-staging
+        plan: starter
+        numInstances: 1
+        envVars:
+          - key: NODE_ENV
+            value: staging
+
+# ============================================================
+# CRON JOBS (Optional)
+# ============================================================
+
+crons:
+  - name: daily-cleanup
+    schedule: "0 2 * * *"  # Run at 2 AM UTC daily
+    command: "node scripts/cleanup.js"
+    service: trayed-web
