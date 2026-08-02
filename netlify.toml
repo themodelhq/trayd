@@ -1,0 +1,100 @@
+# ============================================================
+# Tray'd - Netlify Deployment Configuration
+# @description Production-ready configuration for Netlify hosting
+# ============================================================
+
+[build]
+  # Build command - install deps first, then build
+  command = "npm install --legacy-peer-deps --include=dev && npx prisma generate && npm run build"
+  
+  # Directory to deploy (Next.js output)
+  publish = ".next"
+  
+  # Environment variables during build
+  [build.environment]
+    NODE_VERSION = "20"
+    NPM_VERSION = "10"
+    NEXT_TELEMETRY_DISABLED = "1"
+    
+    # Prisma configuration
+    PRISMA_ENGINES_CHECKSUM_IGNORE = "1"
+    
+    # Use npm (not yarn or pnpm)
+    NPM_FLAGS = "--legacy-peer-deps"
+
+# ============================================================
+# PLUGINS
+# ============================================================
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# ============================================================
+# HEADERS - Security & Performance
+# ============================================================
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# ============================================================
+# REDIRECTS - API Routes
+# ============================================================
+
+# API routes proxy to Netlify Functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# ============================================================
+# FUNCTIONS - Serverless API Routes
+# ============================================================
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["prisma/schema.prisma"]
+
+# Specific function configurations
+[functions."*"]
+  timeout = 30
+  memory_size = 1024
+
+[functions."/api/auth/*"]
+  timeout = 15
+
+[functions."/api/market/*"]
+  timeout = 30
+
+[functions."/api/ai/*"]
+  timeout = 60
+  memory_size = 1536
+
+# ============================================================
+# DEPLOY CONTEXTS
+# ============================================================
+
+[context.production]
+  environment = { NODE_ENV = "production" }
+
+[context.deploy-preview]
+  environment = { NODE_ENV = "preview" }
+
+[context.branch-deploy]
+  environment = { NODE_ENV = "development" }
