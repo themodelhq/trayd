@@ -1,0 +1,372 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   TRAY'D TRADING PLATFORM - GLOBAL STYLES
+   Professional trading platform with glassmorphism & modern UI
+   ============================================================ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  
+  /* Sidebar colors */
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  
+  /* Chart colors */
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  
+  /* Core colors */
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  
+  /* Border radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Custom Tray'd colors */
+  --color-success: #22c55e;
+  --color-success-foreground: #ffffff;
+  --color-warning: #f59e0b;
+  --color-warning-foreground: #000000;
+  --color-info: #3b82f6;
+  --color-info-foreground: #ffffff;
+  --color-profit: #22c55e;
+  --color-loss: #ef4444;
+}
+
+/* ============================================================
+   LIGHT THEME
+   ============================================================ */
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(0.985 0.002 280);
+  --foreground: oklch(0.145 0.005 285);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0.005 285);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0.005 285);
+  --primary: oklch(0.488 0.243 264.376); /* Violet/Purple */
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.965 0.005 280);
+  --secondary-foreground: oklch(0.205 0.005 285);
+  --muted: oklch(0.965 0.005 280);
+  --muted-foreground: oklch(0.5 0.02 285);
+  --accent: oklch(0.955 0.01 280);
+  --accent-foreground: oklch(0.205 0.01 285);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.905 0.005 280);
+  --input: oklch(0.905 0.005 280);
+  --ring: oklch(0.708 0.02 285);
+  
+  /* Chart colors - vibrant palette */
+  --chart-1: oklch(0.646 0.222 41.116);    /* Orange/Gold */
+  --chart-2: oklch(0.6 0.118 184.704);      /* Teal/Cyan */
+  --chart-3: oklch(0.398 0.07 227.392);     /* Blue */
+  --chart-4: oklch(0.828 0.189 84.429);     /* Yellow */
+  --chart-5: oklch(0.769 0.188 70.08);      /* Lime Green */
+  
+  /* Sidebar */
+  --sidebar: oklch(0.98 0.002 280);
+  --sidebar-foreground: oklch(0.145 0.005 285);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.94 0.01 280);
+  --sidebar-accent-foreground: oklch(0.205 0.01 285);
+  --sidebar-border: oklch(0.905 0.005 280);
+  --sidebar-ring: oklch(0.708 0.02 285);
+}
+
+/* ============================================================
+   DARK THEME
+   ============================================================ */
+
+.dark {
+  --background: oklch(0.1 0.01 270);
+  --foreground: oklch(0.96 0.005 280);
+  --card: oklch(0.15 0.012 270);
+  --card-foreground: oklch(0.96 0.005 280);
+  --popover: oklch(0.15 0.012 270);
+  --popover-foreground: oklch(0.96 0.005 280);
+  --primary: oklch(0.65 0.24 270); /* Brighter violet for dark mode */
+  --primary-foreground: oklch(0.1 0 0);
+  --secondary: oklch(0.2 0.015 270);
+  --secondary-foreground: oklch(0.96 0.005 280);
+  --muted: oklch(0.2 0.015 270);
+  --muted-foreground: oklch(0.65 0.02 280);
+  --accent: oklch(0.22 0.02 270);
+  --accent-foreground: oklch(0.96 0.005 280);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(0.25 0.015 270);
+  --input: oklch(0.22 0.015 270);
+  --ring: oklch(0.556 0.08 270);
+  
+  /* Chart colors - adjusted for dark background */
+  --chart-1: oklch(0.7 0.2 40);           /* Bright Orange */
+  --chart-2: oklch(0.7 0.15 180);          /* Bright Cyan */
+  --chart-3: oklch(0.65 0.18 250);         /* Bright Blue */
+  --chart-4: oklch(0.85 0.18 80);          /* Bright Yellow */
+  --chart-5: oklch(0.75 0.18 140);         /* Bright Green */
+  
+  /* Sidebar - slightly different shade */
+  --sidebar: oklch(0.13 0.012 270);
+  --sidebar-foreground: oklch(0.96 0.005 280);
+  --sidebar-primary: oklch(0.65 0.24 270);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.22 0.02 270);
+  --sidebar-accent-foreground: oklch(0.96 0.005 280);
+  --sidebar-border: oklch(0.25 0.015 270);
+  --sidebar-ring: oklch(0.556 0.08 270);
+}
+
+/* ============================================================
+   BASE LAYER STYLES
+   ============================================================ */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-muted-foreground/20 hover:bg-muted-foreground/40;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  
+  /* Selection color */
+  ::selection {
+    @apply bg-primary/20 text-primary;
+  }
+  
+  /* Focus visible styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-background;
+  }
+}
+
+/* ============================================================
+   GLASSMORPHISM UTILITIES (Tailwind v4 @utility syntax)
+   ============================================================ */
+
+@utility glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@utility glass-strong {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+@utility gradient-border {
+  position: relative;
+}
+
+@utility glow-primary {
+  box-shadow: 0 0 20px color-mix(in oklch, var(--color-primary) 30%, transparent),
+              0 0 60px color-mix(in oklch, var(--color-primary) 10%, transparent);
+}
+
+@utility glow-success {
+  box-shadow: 0 0 20px oklch(0.72 0.19 150 / 0.3),
+              0 0 60px oklch(0.72 0.19 150 / 0.1);
+}
+
+@utility glow-danger {
+  box-shadow: 0 0 20px oklch(0.65 0.2 25 / 0.3),
+              0 0 60px oklch(0.65 0.2 25 / 0.1);
+}
+
+@utility text-gradient {
+  background-image: linear-gradient(to right, #8b5cf6, #a855f7, #d946ef);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+  
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+}
+
+@utility shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(1 0 0 / 10%),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer-anim 1.5s infinite;
+}
+
+@keyframes shimmer-anim {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@utility pulse-dot {
+  position: relative;
+}
+
+@utility tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* WebKit scrollbar hiding needs to be applied directly */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================================
+   TRADING-SPECIFIC STYLES
+   ============================================================ */
+
+/* Price change animations */
+.price-up {
+  animation: price-flash-green 0.5s ease-out;
+}
+
+.price-down {
+  animation: price-flash-red 0.5s ease-out;
+}
+
+@keyframes price-flash-green {
+  0% { background-color: oklch(0.72 0.19 150 / 0.3); }
+  100% { background-color: transparent; }
+}
+
+@keyframes price-flash-red {
+  0% { background-color: oklch(0.65 0.2 25 / 0.3); }
+  100% { background-color: transparent; }
+}
+
+/* Order book depth bars */
+.depth-bar-bid {
+  background: linear-gradient(90deg, oklch(0.72 0.19 150 / 0.8), oklch(0.72 0.19 150 / 0.2));
+}
+
+.depth-bar-ask {
+  background: linear-gradient(90deg, oklch(0.65 0.2 25 / 0.2), oklch(0.65 0.2 25 / 0.8));
+}
+
+/* Chart tooltip styles */
+.chart-tooltip {
+  @apply glass rounded-lg px-3 py-2 text-sm shadow-lg;
+}
+
+/* Trading form input focus states */
+.trading-input:focus-within {
+  @apply ring-2 ring-primary/30 border-primary;
+}
+
+/* P&L colors */
+.pnl-positive {
+  @apply text-emerald-500;
+}
+
+.pnl-negative {
+  @apply text-red-500;
+}
+
+.pnl-zero {
+  @apply text-muted-foreground;
+}
+
+/* ============================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================ */
+
+@media (max-width: 768px) {
+  :root {
+    --radius: 0.5rem;
+  }
+  
+  body {
+    font-size: 14px;
+  }
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
