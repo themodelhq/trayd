@@ -1,0 +1,95 @@
+# ============================================================
+# Tray'd - Render Deployment Configuration
+# @description Production-ready blueprint for Render.com hosting
+#              Supports both Docker and native Node.js deployment
+# ============================================================
+
+services:
+  # ==========================================================
+  # MAIN WEB SERVICE - Next.js Application (Docker Deployment)
+  # ==========================================================
+  - type: web
+    name: trayed-web
+    # Use Docker runtime for consistent builds
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    
+    # For Docker deployments, Render uses CMD from Dockerfile
+    # The Dockerfile already has: CMD ["node", "server.js"]
+    
+    # Auto-deploy settings
+    branch: main
+    healthCheckPath: /api/health
+    
+    # Environment variables (secrets should be set in dashboard)
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        # Points at the persistent disk mounted below (/data), so SQLite data
+        # survives redeploys and restarts. Previously this pointed at
+        # "file:./dev.db" (inside the ephemeral container filesystem), which
+        # meant the database was silently wiped on every deploy/restart even
+        # though a persistent disk was configured.
+        # For real production use with more than 1 instance, replace this
+        # with a managed PostgreSQL connection string instead (see note below).
+        value: "file:/data/dev.db"
+      
+    # Number of instances
+    numInstances: 1
+    
+    # Resource limits (increase as needed)
+    cpu: 1
+    memory: 2048  # Increased memory for build stability
+    
+    # Disk configuration (optional, for persistent storage)
+    disk:
+      name: trayed-data
+      mountPath: /data
+      sizeGB: 1
+
+# ============================================================
+# DEPLOYMENT CONTEXTS
+# ============================================================
+
+environments:
+  production:
+    services:
+      - type: web
+        name: trayed-web
+        plan: standard+  # Higher tier for production
+        # NOTE: kept at 1 instance because this service uses a SQLite
+        # database on a mounted persistent disk, and Render disks can only
+        # be attached to a single-instance service - a disk-backed service
+        # will fail to deploy (or silently lose the disk) with numInstances > 1.
+        # To run multiple instances for redundancy, first migrate DATABASE_URL
+        # to a managed PostgreSQL instance (Render Postgres or similar),
+        # remove the `disk` block above, then raise numInstances here.
+        numInstances: 1
+        envVars:
+          - key: NODE_ENV
+            value: production
+  
+  staging:
+    services:
+      - type: web
+        name: trayed-staging
+        plan: starter
+        numInstances: 1
+        envVars:
+          - key: NODE_ENV
+            value: staging
+
+# ============================================================
+# CRON JOBS (Optional)
+# ============================================================
+
+crons:
+  - name: daily-cleanup
+    schedule: "0 2 * * *"  # Run at 2 AM UTC daily
+    command: "node scripts/cleanup.js"
+    service: trayed-web
